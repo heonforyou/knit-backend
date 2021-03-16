@@ -1,14 +1,14 @@
-package com.project.knit.dto.res;
+package com.project.knit.dto.req;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class DocumentResDto {
-    private Long documentId;
-    private String title;
+public class DocumentUpdateReqDto {
     private String html;
 }

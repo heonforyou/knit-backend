@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class DocumentReqDto {
+public class DocumentCreateReqDto {
+    private String id;
     private String title;
+    private String html;
 }
