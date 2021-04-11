@@ -20,12 +20,12 @@ import java.util.List;
 public class AdminController {
     private final AdminService adminService;
 
-    @PostMapping("/accept")
+    @PostMapping("/accept/{threadId}")
     public ResponseEntity<CommonResponse> acceptThread(@PathVariable Long threadId) {
         return new ResponseEntity<>(adminService.acceptThread(threadId), HttpStatus.OK);
     }
 
-    @PostMapping("/decline")
+    @PostMapping("/reject/{threadId}")
     public ResponseEntity<CommonResponse> declineThread(@PathVariable Long threadId) {
         return new ResponseEntity<>(adminService.declineThread(threadId), HttpStatus.OK);
     }
