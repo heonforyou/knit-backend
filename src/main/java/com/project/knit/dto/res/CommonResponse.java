@@ -2,9 +2,8 @@ package com.project.knit.dto.res;
 
 import lombok.*;
 
-@Setter
-@Getter
-@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class CommonResponse {
     private String message;
 }
