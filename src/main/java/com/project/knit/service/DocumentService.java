@@ -1,17 +1,14 @@
 package com.project.knit.service;
 
-import com.project.knit.domain.entity.Content;
 import com.project.knit.domain.entity.Document;
 import com.project.knit.domain.entity.Tag;
 import com.project.knit.domain.repository.DocumentRepository;
 import com.project.knit.domain.repository.TagRepository;
 import com.project.knit.dto.req.DocumentCreateReqDto;
-import com.project.knit.dto.req.DocumentUpdateReqDto;
 import com.project.knit.dto.res.CommonResponse;
 import com.project.knit.dto.res.DocumentResDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;

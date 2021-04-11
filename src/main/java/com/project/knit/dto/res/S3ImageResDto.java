@@ -4,8 +4,7 @@ import lombok.*;
 
 @Setter
 @Getter
-@RequiredArgsConstructor
-@Builder
+@NoArgsConstructor
 public class S3ImageResDto {
     private String url;
 }

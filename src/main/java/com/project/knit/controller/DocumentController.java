@@ -1,7 +1,6 @@
 package com.project.knit.controller;
 
 import com.project.knit.dto.req.DocumentCreateReqDto;
-import com.project.knit.dto.req.DocumentUpdateReqDto;
 import com.project.knit.dto.res.CommonResponse;
 import com.project.knit.dto.res.DocumentResDto;
 import com.project.knit.dto.res.S3ImageResDto;
@@ -15,8 +14,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 
@@ -29,9 +26,9 @@ public class DocumentController {
     private final DocumentService documentService;
     private final S3Service s3Service;
 
-    @GetMapping("/thread/{documentId}")
-    public ResponseEntity<DocumentResDto> getDocumentInfoById(@PathVariable String documentId) {
-        return new ResponseEntity<>(documentService.getDocumentInfoById(Long.valueOf(documentId)), HttpStatus.OK);
+    @GetMapping("/thread/{threadId}")
+    public ResponseEntity<DocumentResDto> getDocumentInfoById(@PathVariable Long threadId) {
+        return new ResponseEntity<>(documentService.getDocumentInfoById(threadId), HttpStatus.OK);
     }
 
     @PostMapping("/v1/document/register")

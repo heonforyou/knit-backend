@@ -2,7 +2,6 @@ package com.project.knit.service;
 
 import com.project.knit.domain.entity.Document;
 import com.project.knit.domain.repository.DocumentRepository;
-import com.project.knit.dto.req.DocumentCreateReqDto;
 import com.project.knit.dto.res.CommonResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

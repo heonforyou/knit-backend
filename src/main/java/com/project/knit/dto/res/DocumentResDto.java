@@ -1,20 +1,19 @@
 package com.project.knit.dto.res;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.knit.domain.entity.Category;
 import com.project.knit.domain.entity.Content;
 import com.project.knit.domain.entity.Reference;
 import com.project.knit.domain.entity.Tag;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Setter
 @Getter
-@RequiredArgsConstructor
-@Builder
+@NoArgsConstructor
 public class DocumentResDto {
     private Long documentId;
     private String documentTitle;
