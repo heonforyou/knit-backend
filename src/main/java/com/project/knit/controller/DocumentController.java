@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 
 @Slf4j
@@ -36,6 +37,16 @@ public class DocumentController {
     @PostMapping("/v1/document/register")
     public ResponseEntity<CommonResponse> registerDocument(@RequestBody DocumentCreateReqDto documentCreateReqDto) {
         return new ResponseEntity<>(documentService.registerDocument(documentCreateReqDto), HttpStatus.OK);
+    }
+
+    @PostMapping("/v1/threads/tag/{tagId}")
+    public ResponseEntity<List<DocumentResDto>> getDocumentListByTagId(@PathVariable Long tagId) {
+        return new ResponseEntity<>(documentService.getDocumentListByTagId(tagId), HttpStatus.OK);
+    }
+
+    @GetMapping()
+    public ResponseEntity<CommonResponse> checkTagName(@RequestParam String tagName) {
+        return new ResponseEntity<>(documentService.checkTagName(tagName), HttpStatus.OK);
     }
 
 //    @PatchMapping("/add/content/{documentId}")

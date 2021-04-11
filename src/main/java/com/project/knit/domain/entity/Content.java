@@ -1,6 +1,7 @@
 package com.project.knit.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.project.knit.utils.enums.DocumentType;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,7 +16,9 @@ public class Content extends TimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String type;
+    @Column(name = "type")
+    @Enumerated(EnumType.STRING)
+    private DocumentType documentType;
 
     private String value;
 
@@ -25,8 +28,8 @@ public class Content extends TimeEntity {
     private Document document;
 
     @Builder
-    public Content(String type, String value, Document document) {
-        this.type = type;
+    public Content(DocumentType documentType, String value, Document document) {
+        this.documentType = documentType;
         this.value = value;
         this.document = document;
     }

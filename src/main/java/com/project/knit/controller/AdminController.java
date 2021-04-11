@@ -20,13 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminController {
     private final AdminService adminService;
 
-    @PostMapping
-    public ResponseEntity<CommonResponse> acceptDocument(@PathVariable String documentId) {
-        return new ResponseEntity<>(adminService.acceptDocument(Long.valueOf(documentId)), HttpStatus.OK);
+    @PostMapping("/accept")
+    public ResponseEntity<CommonResponse> acceptDocument(@PathVariable Long documentId) {
+        return new ResponseEntity<>(adminService.acceptDocument(documentId), HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<CommonResponse> declineDocument(@PathVariable String documentId) {
-        return new ResponseEntity<>(adminService.declineDocument(Long.valueOf(documentId)), HttpStatus.OK);
+    @PostMapping("/decline")
+    public ResponseEntity<CommonResponse> declineDocument(@PathVariable Long documentId) {
+        return new ResponseEntity<>(adminService.declineDocument(documentId), HttpStatus.OK);
     }
 }

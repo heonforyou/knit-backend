@@ -1,17 +1,13 @@
 package com.project.knit.domain.repository;
 
 import com.project.knit.domain.entity.Document;
+import com.project.knit.domain.entity.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import org.w3c.dom.stylesheets.LinkStyle;
 
-import javax.transaction.Transactional;
+import java.util.List;
 
 public interface DocumentRepository extends JpaRepository<Document, Long> {
+    List<Document> findAllByTagList(List<Tag> tagList);
 
-    @Transactional
-    @Modifying
-    @Query(value = "update Document d set d.html = :html")
-    void updateDocumentHtml(@Param("html") String html);
 }

@@ -17,7 +17,4 @@ public class Tag extends TimeEntity {
 
     @Column(name = "tag_name", length = 45)
     private String tagName;
-
-    @Column(name = "is_required", columnDefinition = "CHAR(1) NOT NULL COMMENT 'Y:직군태그, N:주제태그'")
-    private String isRequired;
 }

@@ -1,5 +1,6 @@
 package com.project.knit.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,5 +18,6 @@ public class Category extends TimeEntity{
 
     private String category;
 
+    @JsonIgnore
     private String description;
 }
