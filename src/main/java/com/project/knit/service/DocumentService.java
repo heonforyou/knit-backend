@@ -45,7 +45,7 @@ public class DocumentService {
         resDto.setDocumentSubTitle(document.getDocumentSubTitle());
         resDto.setDocumentThumbnail(document.getDocumentThumbnail());
 
-        return DocumentResDto.builder().documentTitle(document.getDocumentTitle()).build();
+        return resDto;
     }
 
     @Transactional
