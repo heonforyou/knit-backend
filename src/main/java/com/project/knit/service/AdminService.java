@@ -25,7 +25,10 @@ public class AdminService {
         // ThreadTag save
         // ThreadReference save
 
-        return CommonResponse.builder().message("Thread Successfully Created.").build();
+        CommonResponse response = new CommonResponse();
+        response.setMessage("Thread Successfully Created.");
+
+        return response;
     }
 
     public CommonResponse declineThread(Long threadId) {
@@ -34,7 +37,10 @@ public class AdminService {
 
         threadRepository.save(thread);
 
-        return CommonResponse.builder().message("Thread Declined.").build();
+        CommonResponse response = new CommonResponse();
+        response.setMessage("Thread Declined.");
+
+        return response;
     }
 
     public List<ThreadAdminResDto> getAllThreadList() {

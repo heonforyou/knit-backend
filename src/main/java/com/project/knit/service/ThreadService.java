@@ -26,11 +26,14 @@ public class ThreadService {
     private final AdminService adminService;
 
     public CommonResponse checkTagName(String tagName) {
+        CommonResponse response = new CommonResponse();
         Tag tag = tagRepository.findByTagName(tagName);
         if(tag != null) {
-            return CommonResponse.builder().message("Already Exists.").build();
+            response.setMessage("Already Exists.");
         }
-        return CommonResponse.builder().message("Available Tag Name.").build();
+        response.setMessage("Available Tag Name.");
+
+        return response;
     }
 
     public ThreadResDto getThreadInfoById(Long id) {
@@ -128,7 +131,10 @@ public class ThreadService {
             r.addThread(createdThread);
         }
 
-        return CommonResponse.builder().message("Thread on the waiting list.").build();
+        CommonResponse response = new CommonResponse();
+        response.setMessage("Thread on the waiting list.");
+
+        return response;
     }
 
     public ThreadListResDto getThreadListByTagId(Long tagId) {

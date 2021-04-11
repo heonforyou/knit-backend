@@ -1,9 +1,11 @@
 package com.project.knit.dto.res;
 
 import lombok.*;
+import org.springframework.web.bind.annotation.GetMapping;
 
-@AllArgsConstructor
-@Builder
+@Getter
+@Setter
+@NoArgsConstructor
 public class CommonResponse {
     private String message;
 }
