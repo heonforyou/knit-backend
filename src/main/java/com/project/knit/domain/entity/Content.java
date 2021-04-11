@@ -37,4 +37,8 @@ public class Content extends TimeEntity {
         this.value = value;
         this.thread = thread;
     }
+
+    public void addThread(Thread thread) {
+        this.thread = thread;
+    }
 }

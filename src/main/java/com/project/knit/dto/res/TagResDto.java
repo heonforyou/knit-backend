@@ -1,15 +1,14 @@
 package com.project.knit.dto.res;
 
+import com.project.knit.domain.entity.TimeEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Setter
 @Getter
 @NoArgsConstructor
-public class ThreadListResDto {
-    private Integer count;
-    private List<ThreadAdminResDto> threadList;
+public class TagResDto {
+    private Long tagId;
+    private String tag;
 }

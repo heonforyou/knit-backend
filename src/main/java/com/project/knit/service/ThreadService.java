@@ -4,9 +4,7 @@ import com.project.knit.domain.entity.*;
 import com.project.knit.domain.entity.Thread;
 import com.project.knit.domain.repository.*;
 import com.project.knit.dto.req.ThreadCreateReqDto;
-import com.project.knit.dto.res.CommonResponse;
-import com.project.knit.dto.res.ThreadListResDto;
-import com.project.knit.dto.res.ThreadResDto;
+import com.project.knit.dto.res.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -38,12 +36,55 @@ public class ThreadService {
     public ThreadResDto getThreadInfoById(Long id) {
         Thread thread = threadRepository.findById(id)
                 .orElseThrow(NullPointerException::new);
+        Long threadId = thread.getId();
 
+        List<Content> contentList = contentRepository.findAllByThreadId(threadId);
+        List<Category> categoryList = categoryRepository.findAllByThreadId(threadId);
+        List<Tag> tagList = tagRepository.findAllByThreadId(threadId);
+        List<Reference> referenceList = referenceRepository.findAllByThreadId(threadId);
+
+        List<ContentResDto> contentResList = new ArrayList<>();
+        List<CategoryResDto> categoryResList = new ArrayList<>();
+        List<TagResDto> tagResList = new ArrayList<>();
+        List<ReferenceResDto> referenceResList = new ArrayList<>();
+
+        for(Content c : contentList) {
+            ContentResDto res = new ContentResDto();
+            res.setContentId(c.getId());
+            res.setType(c.getThreadType().name());
+            res.setValue(c.getValue());
+            res.setSummary(c.getSummary() == null ? null : c.getSummary());
+
+            contentResList.add(res);
+        }
+        for(Category c :categoryList) {
+            CategoryResDto res = new CategoryResDto();
+            res.setCategoryId(c.getId());
+            res.setCategory(c.getCategory());
+
+            categoryResList.add(res);
+        }
+        for(Tag t : tagList) {
+            TagResDto res = new TagResDto();
+            res.setTagId(t.getId());
+            res.setTag(t.getTagName());
+
+            tagResList.add(res);
+        }
+        for(Reference r : referenceList) {
+            ReferenceResDto res = new ReferenceResDto();
+            res.setReferenceId(r.getId());
+            res.setReferenceLink(r.getReferenceLink());
+            res.setReferenceDescription(r.getReferenceDescription());
+
+            referenceResList.add(res);
+        }
+        
         ThreadResDto resDto = new ThreadResDto();
-        resDto.setCategoryList(thread.getCategoryList());
-        resDto.setContentList(thread.getContentList());
-        resDto.setReferenceList(thread.getReferenceList());
-        resDto.setTagList(thread.getTagList());
+        resDto.setCategoryList(categoryResList);
+        resDto.setContentList(contentResList);
+        resDto.setReferenceList(referenceResList);
+        resDto.setTagList(tagResList);
         resDto.setThreadId(thread.getId());
         resDto.setThreadTitle(thread.getThreadTitle());
         resDto.setThreadSubTitle(thread.getThreadSubTitle());
@@ -54,6 +95,7 @@ public class ThreadService {
 
     @Transactional
     public CommonResponse registerThread(ThreadCreateReqDto threadCreateReqDto) {
+
         Thread thread = Thread.builder()
                 .threadTitle(threadCreateReqDto.getTitle())
                 .threadSubTitle(threadCreateReqDto.getSubTitle())
@@ -66,19 +108,24 @@ public class ThreadService {
                 .status("대기")
                 .build();
 
-        threadRepository.save(thread);
+        Thread createdThread = threadRepository.save(thread);
+
 
         for(Content c : threadCreateReqDto.getContentList()) {
             contentRepository.save(c);
+            c.addThread(createdThread);
         }
         for(Tag t : threadCreateReqDto.getTagList()) {
             tagRepository.save(t);
+            t.addThread(createdThread);
         }
         for(Category c : threadCreateReqDto.getCategoryList()) {
             categoryRepository.save(c);
+            c.addThread(createdThread);
         }
         for(Reference r : threadCreateReqDto.getReferenceList()) {
             referenceRepository.save(r);
+            r.addThread(createdThread);
         }
 
         return CommonResponse.builder().message("Thread on the waiting list.").build();
@@ -88,19 +135,21 @@ public class ThreadService {
         Tag tag = tagRepository.getOne(tagId);
         List<Tag> tagList = new ArrayList<>();
         tagList.add(tag);
-        List<ThreadResDto> resDtoList = new ArrayList<>();
+        List<ThreadAdminResDto> resDtoList = new ArrayList<>();
 
         List<Thread> threadList = threadRepository.findAllByTagListIn(tagList);
         for(Thread d : threadList) {
-            ThreadResDto res  = new ThreadResDto();
+            ThreadAdminResDto res  = new ThreadAdminResDto();
+            
+            res.setNickname("테스트닉네임");
             res.setThreadId(d.getId());
             res.setThreadTitle(d.getThreadTitle());
             res.setThreadSubTitle(d.getThreadSubTitle());
             res.setThreadThumbnail(d.getThreadThumbnail());
             res.setTagList(d.getTagList());
             res.setReferenceList(d.getReferenceList());
-            res.setContentList(d.getContentList());
-            res.setCategoryList(d.getCategoryList());
+//            res.setContentList(d.getContentList());
+//            res.setCategoryList(d.getCategoryList());
 
             resDtoList.add(res);
         }

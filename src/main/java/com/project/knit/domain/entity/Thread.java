@@ -15,7 +15,7 @@ import java.util.List;
 @Entity
 public class Thread extends TimeEntity {
 
-    @Column(name = "documet_id")
+    @Column(name = "thread_id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

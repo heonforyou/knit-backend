@@ -25,4 +25,8 @@ public class Tag extends TimeEntity {
     @ManyToOne
     @JoinColumn(name = "thread_id")
     private Thread thread;
+
+    public void addThread(Thread thread) {
+        this.thread = thread;
+    }
 }

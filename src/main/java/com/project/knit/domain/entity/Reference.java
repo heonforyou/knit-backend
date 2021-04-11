@@ -37,4 +37,8 @@ public class Reference extends TimeEntity {
         this.referenceDescription = referenceDescription;
         this.thread = thread;
     }
+
+    public void addThread(Thread thread) {
+        this.thread = thread;
+    }
 }
