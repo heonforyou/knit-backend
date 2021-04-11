@@ -43,7 +43,7 @@ public class ThreadController {
     }
 
     @GetMapping("/v1/threads/tag/validation")
-    public ResponseEntity<CommonResponse> checkTagName(@RequestParam String tagName) {
+    public ResponseEntity<CommonResponse> checkTagName(@RequestParam(value = "tag") String tagName) {
         return new ResponseEntity<>(threadService.checkTagName(tagName), HttpStatus.OK);
     }
 

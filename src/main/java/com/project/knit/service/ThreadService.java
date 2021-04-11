@@ -30,7 +30,7 @@ public class ThreadService {
         if(tag != null) {
             return CommonResponse.builder().message("Already Exists.").build();
         }
-        return CommonResponse.builder().message("Avalilable Tag Name.").build();
+        return CommonResponse.builder().message("Available Tag Name.").build();
     }
 
     public ThreadResDto getThreadInfoById(Long id) {
