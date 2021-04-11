@@ -15,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -48,12 +49,12 @@ public class ThreadController {
     }
 
     @PostMapping("/upload/thumbnail")
-    public ResponseEntity<S3ImageResDto> uploadThreadThumbnail(MultipartFile multipartFile, @RequestPart String filename) {
+    public ResponseEntity<S3ImageResDto> uploadThreadThumbnail(@RequestPart(value = "file") MultipartFile multipartFile, @RequestPart(value = "fileName") String filename) throws IOException {
         return new ResponseEntity<>(s3Service.uploadThumbnail(multipartFile, filename), HttpStatus.OK);
     }
 
     @PostMapping("/upload/image")
-    public ResponseEntity<S3ImageResDto> uploadThreadFile(MultipartFile multipartFile, @RequestPart String filename) {
+    public ResponseEntity<S3ImageResDto> uploadThreadFile(MultipartFile multipartFile, @RequestPart String filename) throws IOException {
         return new ResponseEntity<>(s3Service.uploadThreadFile(multipartFile, filename), HttpStatus.OK);
     }
 }

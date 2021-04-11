@@ -9,11 +9,15 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.project.knit.dto.res.S3ImageResDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -31,8 +35,10 @@ public class S3Service {
     @Value("s3.dir.thumbnail")
     private String thumbnailDir;
 
-    public S3ImageResDto uploadThumbnail(MultipartFile multipartFile, String filename) {
+    public S3ImageResDto uploadThumbnail(MultipartFile multipartFile, String filename) throws IOException {
 
+        File uploadFile = convert(multipartFile)
+                .orElseThrow(() -> new IllegalArgumentException("Failed to convert from MultipartFile to File"));
         AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
         AmazonS3 s3Client = AmazonS3ClientBuilder
                 .standard()
@@ -43,7 +49,7 @@ public class S3Service {
         s3Client.putObject(
                 thumbnailDir,
                 filename, // 확장자 포함
-                (File) multipartFile
+                uploadFile
         );
 
         S3ImageResDto res = new S3ImageResDto();
@@ -54,8 +60,22 @@ public class S3Service {
 
     }
 
-    public S3ImageResDto uploadThreadFile(MultipartFile multipartFile, String filename) {
+    private Optional<File> convert(MultipartFile file) throws IOException {
+        File convertFile = new File(file.getOriginalFilename());
+        if(convertFile.createNewFile()) {
+            try (FileOutputStream fos = new FileOutputStream(convertFile)) {
+                fos.write(file.getBytes());
+            }
+            return Optional.of(convertFile);
+        }
 
+        return Optional.empty();
+    }
+
+    public S3ImageResDto uploadThreadFile(MultipartFile multipartFile, String filename) throws IOException {
+
+        File uploadFile = convert(multipartFile)
+                .orElseThrow(() -> new IllegalArgumentException("Failed to convert from MultipartFile to File"));
         AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
         AmazonS3 s3Client = AmazonS3ClientBuilder
                 .standard()
@@ -66,7 +86,7 @@ public class S3Service {
         s3Client.putObject(
                 threadDir,
                 filename, // 확장자 포함
-                (File) multipartFile
+                uploadFile
         );
         S3ImageResDto res = new S3ImageResDto();
         res.setUrl(s3Client.getUrl(threadDir, filename).toString());
