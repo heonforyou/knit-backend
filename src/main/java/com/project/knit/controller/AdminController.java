@@ -21,12 +21,12 @@ public class AdminController {
     private final AdminService adminService;
 
     @PostMapping("/accept")
-    public ResponseEntity<CommonResponse> acceptDocument(@PathVariable Long documentId) {
-        return new ResponseEntity<>(adminService.acceptDocument(documentId), HttpStatus.OK);
+    public ResponseEntity<CommonResponse> acceptThread(@PathVariable Long threadId) {
+        return new ResponseEntity<>(adminService.acceptThread(threadId), HttpStatus.OK);
     }
 
     @PostMapping("/decline")
-    public ResponseEntity<CommonResponse> declineDocument(@PathVariable Long documentId) {
-        return new ResponseEntity<>(adminService.declineDocument(documentId), HttpStatus.OK);
+    public ResponseEntity<CommonResponse> declineThread(@PathVariable Long threadId) {
+        return new ResponseEntity<>(adminService.declineThread(threadId), HttpStatus.OK);
     }
 }

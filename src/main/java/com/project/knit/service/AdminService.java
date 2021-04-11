@@ -1,7 +1,7 @@
 package com.project.knit.service;
 
-import com.project.knit.domain.entity.Document;
-import com.project.knit.domain.repository.DocumentRepository;
+import com.project.knit.domain.entity.Thread;
+import com.project.knit.domain.repository.ThreadRepository;
 import com.project.knit.dto.res.CommonResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,23 +10,26 @@ import org.springframework.stereotype.Service;
 @Service
 public class AdminService {
 
-    private final DocumentRepository documentRepository;
+    private final ThreadRepository threadRepository;
 
-    public CommonResponse acceptDocument(Long documentId) {
-        Document document = documentRepository.getOne(documentId);
-        document.changeStatus("승인");
+    public CommonResponse acceptThread(Long threadId) {
+        Thread thread = threadRepository.getOne(threadId);
+        thread.changeStatus("승인");
 
-        documentRepository.save(document);
+        threadRepository.save(thread);
+        // ThreadCategory save
+        // ThreadTag save
+        // ThreadReference save
 
-        return CommonResponse.builder().message("Document Successfully Created.").build();
+        return CommonResponse.builder().message("Thread Successfully Created.").build();
     }
 
-    public CommonResponse declineDocument(Long documentId) {
-        Document document = documentRepository.getOne(documentId);
-        document.changeStatus("반려");
+    public CommonResponse declineThread(Long threadId) {
+        Thread thread = threadRepository.getOne(threadId);
+        thread.changeStatus("반려");
 
-        documentRepository.save(document);
+        threadRepository.save(thread);
 
-        return CommonResponse.builder().message("Document Declined.").build();
+        return CommonResponse.builder().message("Thread Declined.").build();
     }
 }

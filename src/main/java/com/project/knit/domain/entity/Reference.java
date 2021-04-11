@@ -1,6 +1,7 @@
 package com.project.knit.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,15 +25,16 @@ public class Reference extends TimeEntity {
     @Column(name = "reference_description", columnDefinition = "VARCHAR(500) COMMENT '참조링크에 대한 설명'")
     private String referenceDescription;
 
+    @JsonIgnore
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "document_id")
-    private Document document;
+    @JoinColumn(name = "thread_id")
+    private Thread thread;
 
     @Builder
-    public Reference(String referenceLink, String referenceDescription, Document document) {
+    public Reference(String referenceLink, String referenceDescription, Thread thread) {
         this.referenceLink = referenceLink;
         this.referenceDescription = referenceDescription;
-        this.document = document;
+        this.thread = thread;
     }
 }

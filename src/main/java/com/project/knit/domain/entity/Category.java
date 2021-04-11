@@ -1,5 +1,6 @@
 package com.project.knit.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -20,4 +21,10 @@ public class Category extends TimeEntity{
 
     @JsonIgnore
     private String description;
+
+    @JsonIgnore
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "thread_id")
+    private Thread thread;
 }

@@ -14,11 +14,11 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
-public class DocumentResDto {
-    private Long documentId;
-    private String documentTitle;
-    private String documentSubTitle;
-    private String documentThumbnail;
+public class ThreadResDto {
+    private Long threadId;
+    private String threadTitle;
+    private String threadSubTitle;
+    private String threadThumbnail;
     private List<Content> contentList;
     private List<Tag> tagList;
     private List<Category> categoryList;

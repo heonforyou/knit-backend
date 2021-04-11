@@ -8,8 +8,8 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
-public class DocumentUpdateReqDto {
+public class ThreadUpdateReqDto {
     private String subTitle;
-    private String documentFileName;
+    private String threadFileName;
     private List<Content> contentList;
 }

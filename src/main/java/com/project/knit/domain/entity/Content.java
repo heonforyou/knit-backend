@@ -1,7 +1,8 @@
 package com.project.knit.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.project.knit.utils.enums.DocumentType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.knit.utils.enums.ThreadType;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,19 +19,22 @@ public class Content extends TimeEntity {
 
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
-    private DocumentType documentType;
+    private ThreadType threadType;
 
     private String value;
 
+    private String summary;
+
+    @JsonIgnore
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "document_id")
-    private Document document;
+    @JoinColumn(name = "thread_id")
+    private Thread thread;
 
     @Builder
-    public Content(DocumentType documentType, String value, Document document) {
-        this.documentType = documentType;
+    public Content(ThreadType threadType, String value, Thread thread) {
+        this.threadType = threadType;
         this.value = value;
-        this.document = document;
+        this.thread = thread;
     }
 }

@@ -13,45 +13,50 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class Document extends TimeEntity {
+public class Thread extends TimeEntity {
 
     @Column(name = "documet_id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "document_title", updatable = false)
-    private String documentTitle;
+    @Column(name = "thread_title", updatable = false)
+    private String threadTitle;
 
-    @Column(name = "document_sub_title")
-    private String documentSubTitle;
+    @Column(name = "thread_sub_title")
+    private String threadSubTitle;
 
-    @Column(name = "document_thumbnail")
-    private String documentThumbnail;
+    @Column(name = "thread_thumbnail")
+    private String threadThumbnail;
+
+    @Column(name = "thread_summary")
+    private String threadSummary;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "document")
+    @OneToMany(mappedBy = "thread")
     private List<Content> contentList = new ArrayList<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "document")
+    @OneToMany(mappedBy = "thread")
     private List<Tag> tagList = new ArrayList<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "document")
+    @OneToMany(mappedBy = "thread")
     private List<Category> categoryList = new ArrayList<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "document")
+    @OneToMany(mappedBy = "thread")
     private List<Reference> referenceList = new ArrayList<>();
 
     private String status;
 
     @Builder
-    public Document(String documentTitle, String documentSubTitle, String documentThumbnail, List<Reference> referenceList, List<Tag> tagList, List<Category> categoryList, String status) {
-        this.documentTitle = documentTitle;
-        this.documentSubTitle = documentSubTitle;
-        this.documentThumbnail = documentThumbnail;
+    public Thread(String threadTitle, String threadSubTitle, String threadThumbnail, String threadSummary, List<Content> contentList,List<Reference> referenceList, List<Tag> tagList, List<Category> categoryList, String status) {
+        this.threadTitle = threadTitle;
+        this.threadSubTitle = threadSubTitle;
+        this.threadThumbnail = threadThumbnail;
+        this.threadSummary = threadSummary;
+        this.contentList = contentList;
         this.referenceList = referenceList;
         this.tagList = tagList;
         this.categoryList = categoryList;

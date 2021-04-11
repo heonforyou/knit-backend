@@ -26,10 +26,8 @@ public class S3Service {
     @Value("aws.secret-key")
     private String secretKey;
 
-    private String s3BaseUrl = "https://knit-document.s3.ap-northeast-2.amazonaws.com/";
-
-    @Value("s3.dir.document")
-    private String documentDir;
+    @Value("s3.dir.thread")
+    private String threadDir;
     @Value("s3.dir.thumbnail")
     private String thumbnailDir;
 
@@ -56,7 +54,7 @@ public class S3Service {
 
     }
 
-    public S3ImageResDto uploadDocumentFile(MultipartFile multipartFile, String filename) {
+    public S3ImageResDto uploadThreadFile(MultipartFile multipartFile, String filename) {
 
         AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
         AmazonS3 s3Client = AmazonS3ClientBuilder
@@ -66,12 +64,12 @@ public class S3Service {
                 .build();
 
         s3Client.putObject(
-                documentDir,
+                threadDir,
                 filename, // 확장자 포함
                 (File) multipartFile
         );
         S3ImageResDto res = new S3ImageResDto();
-        res.setUrl(s3Client.getUrl(documentDir, filename).toString());
+        res.setUrl(s3Client.getUrl(threadDir, filename).toString());
 
         return res;
     }
