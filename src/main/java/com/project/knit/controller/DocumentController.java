@@ -21,7 +21,6 @@ import javax.validation.constraints.NotBlank;
 
 @Slf4j
 @Validated
-@RequestMapping("/v1/document")
 @RequiredArgsConstructor
 @RestController
 public class DocumentController {
@@ -29,12 +28,12 @@ public class DocumentController {
     private final DocumentService documentService;
     private final S3Service s3Service;
 
-    @GetMapping("/{documentId}")
+    @GetMapping("/thread/{documentId}")
     public ResponseEntity<DocumentResDto> getDocumentInfoById(@PathVariable String documentId) {
         return new ResponseEntity<>(documentService.getDocumentInfoById(Long.valueOf(documentId)), HttpStatus.OK);
     }
 
-    @PostMapping("/register")
+    @PostMapping("/v1/document/register")
     public ResponseEntity<CommonResponse> registerDocument(@RequestBody DocumentCreateReqDto documentCreateReqDto) {
         return new ResponseEntity<>(documentService.registerDocument(documentCreateReqDto), HttpStatus.OK);
     }
