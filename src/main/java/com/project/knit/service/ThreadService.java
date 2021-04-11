@@ -30,8 +30,9 @@ public class ThreadService {
         Tag tag = tagRepository.findByTagName(tagName);
         if(tag != null) {
             response.setMessage("Already Exists.");
+        } else {
+            response.setMessage("Available Tag Name.");
         }
-        response.setMessage("Available Tag Name.");
 
         return response;
     }
