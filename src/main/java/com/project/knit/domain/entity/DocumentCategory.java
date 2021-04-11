@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "document_tag")
+@Table(name = "document_category")
 @Getter
 @Entity
-public class DocumentTag extends TimeEntity {
-    @Column(name = "document_tag_id")
+public class DocumentCategory extends TimeEntity {
+    @Column(name = "document_category_id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,6 +19,6 @@ public class DocumentTag extends TimeEntity {
     @Column(name = "document_id")
     private Long documentId;
 
-    @Column(name = "tag_id")
-    private Long tagId;
+    @Column(name = "category_id")
+    private Long categoryId;
 }
