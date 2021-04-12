@@ -28,7 +28,7 @@ public class ThreadService {
     public CommonResponse checkTagName(String tagName) {
         CommonResponse response = new CommonResponse();
         Tag tag = tagRepository.findByTagName(tagName);
-        if(tag != null) {
+        if (tag != null) {
             response.setMessage("Already Exists.");
         } else {
             response.setMessage("Available Tag Name.");
@@ -52,7 +52,7 @@ public class ThreadService {
         List<TagResDto> tagResList = new ArrayList<>();
         List<ReferenceResDto> referenceResList = new ArrayList<>();
 
-        for(Content c : contentList) {
+        for (Content c : contentList) {
             ContentResDto res = new ContentResDto();
             res.setContentId(c.getId());
             res.setType(c.getThreadType().name());
@@ -61,21 +61,21 @@ public class ThreadService {
 
             contentResList.add(res);
         }
-        for(Category c :categoryList) {
+        for (Category c : categoryList) {
             CategoryResDto res = new CategoryResDto();
             res.setCategoryId(c.getId());
             res.setCategory(c.getCategory());
 
             categoryResList.add(res);
         }
-        for(Tag t : tagList) {
+        for (Tag t : tagList) {
             TagResDto res = new TagResDto();
             res.setTagId(t.getId());
             res.setTag(t.getTagName());
 
             tagResList.add(res);
         }
-        for(Reference r : referenceList) {
+        for (Reference r : referenceList) {
             ReferenceResDto res = new ReferenceResDto();
             res.setReferenceId(r.getId());
             res.setReferenceLink(r.getReferenceLink());
@@ -83,7 +83,7 @@ public class ThreadService {
 
             referenceResList.add(res);
         }
-        
+
         ThreadResDto resDto = new ThreadResDto();
         resDto.setCategoryList(categoryResList);
         resDto.setContentList(contentResList);
@@ -100,6 +100,10 @@ public class ThreadService {
     @Transactional
     public CommonResponse registerThread(ThreadCreateReqDto threadCreateReqDto) {
 
+        threadCreateReqDto.getTagList().forEach(t -> {
+            checkTagName(t.getTagName());
+        });
+
         Thread thread = Thread.builder()
                 .threadTitle(threadCreateReqDto.getTitle())
                 .threadSubTitle(threadCreateReqDto.getSubTitle())
@@ -114,20 +118,19 @@ public class ThreadService {
 
         Thread createdThread = threadRepository.save(thread);
 
-
-        for(Content c : threadCreateReqDto.getContentList()) {
+        for (Content c : threadCreateReqDto.getContentList()) {
             contentRepository.save(c);
             c.addThread(createdThread);
         }
-        for(Tag t : threadCreateReqDto.getTagList()) {
+        for (Tag t : threadCreateReqDto.getTagList()) {
             tagRepository.save(t);
             t.addThread(createdThread);
         }
-        for(Category c : threadCreateReqDto.getCategoryList()) {
+        for (Category c : threadCreateReqDto.getCategoryList()) {
             categoryRepository.save(c);
             c.addThread(createdThread);
         }
-        for(Reference r : threadCreateReqDto.getReferenceList()) {
+        for (Reference r : threadCreateReqDto.getReferenceList()) {
             referenceRepository.save(r);
             r.addThread(createdThread);
         }
@@ -145,9 +148,9 @@ public class ThreadService {
         List<ThreadAdminResDto> resDtoList = new ArrayList<>();
 
         List<Thread> threadList = threadRepository.findAllByTagListIn(tagList);
-        for(Thread d : threadList) {
-            ThreadAdminResDto res  = new ThreadAdminResDto();
-            
+        for (Thread d : threadList) {
+            ThreadAdminResDto res = new ThreadAdminResDto();
+
             res.setNickname("테스트닉네임");
             res.setThreadId(d.getId());
             res.setThreadTitle(d.getThreadTitle());
@@ -165,5 +168,32 @@ public class ThreadService {
         res.setThreadList(resDtoList);
 
         return res;
+    }
+
+    public List<TagResDto> getAllTags() {
+        List<Tag> tagList = tagRepository.findAll();
+        List<TagResDto> resDtoList = new ArrayList<>();
+        tagList.forEach(tag -> {
+            TagResDto res = new TagResDto();
+            res.setTagId(tag.getId());
+            res.setTag(tag.getTagName());
+
+            resDtoList.add(res);
+        });
+        return resDtoList;
+    }
+
+    public List<CategoryResDto> getAllCategories() {
+        List<Category> categoryList = categoryRepository.findAll();
+        List<CategoryResDto> resDtoList = new ArrayList<>();
+        categoryList.forEach(c -> {
+            CategoryResDto res = new CategoryResDto();
+            res.setCategoryId(c.getId());
+            res.setCategory(c.getCategory());
+
+            resDtoList.add(res);
+        });
+
+        return resDtoList;
     }
 }
