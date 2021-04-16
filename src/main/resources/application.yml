@@ -1,3 +1,12 @@
 spring:
   profiles:
     active: prod
+
+aws:
+  access-key: '#access-key-enc'
+  secret-key: '#secret-key-enc'
+                
+s3:
+  thread-dir: '#thread-dir'
+  thumbnail-dir: '#thumbnail-dir'
+  region: 'ap-northeast-2'
