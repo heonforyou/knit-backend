@@ -1,5 +1,10 @@
 package com.project.knit.utils.enums;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum ResponseMessageEnum {
 
     SUCCESS("Success"),
@@ -7,11 +12,4 @@ public enum ResponseMessageEnum {
 
     private final String message;
 
-    ResponseMessageEnum(String message) {
-        this.message = message;
-    }
-
-    public String getMessage() {
-        return this.message;
-    }
 }
