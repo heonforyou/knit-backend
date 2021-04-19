@@ -46,7 +46,7 @@ public class ThreadController {
         return new ResponseEntity<>(threadService.registerThread(threadCreateReqDto), HttpStatus.OK);
     }
 
-    @PostMapping("/v1/threads/tag/{tagId}")
+    @GetMapping("/v1/threads/tag/{tagId}")
     public ResponseEntity<ThreadListResDto> getThreadListByTagId(@PathVariable Long tagId) {
         return new ResponseEntity<>(threadService.getThreadListByTagId(tagId), HttpStatus.OK);
     }

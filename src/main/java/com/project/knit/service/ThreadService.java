@@ -142,24 +142,59 @@ public class ThreadService {
     }
 
     public ThreadListResDto getThreadListByTagId(Long tagId) {
-        Tag tag = tagRepository.getOne(tagId);
+        Tag tag = tagRepository.findById(tagId).orElse(null);
         List<Tag> tagList = new ArrayList<>();
         tagList.add(tag);
         List<ThreadAdminResDto> resDtoList = new ArrayList<>();
 
-        List<Thread> threadList = threadRepository.findAllByTagListIn(tagList);
-        for (Thread d : threadList) {
+        List<Thread> threadList = threadRepository.findAllByStatusAndTagListIn("승인", tagList);
+        for (Thread t : threadList) {
             ThreadAdminResDto res = new ThreadAdminResDto();
+            res.setThreadId(t.getId());
+            res.setThreadTitle(t.getThreadTitle());
+            res.setThreadSubTitle(t.getThreadSubTitle());
+            res.setThreadThumbnail(t.getThreadThumbnail());
+            List<ContentResDto> contentList = new ArrayList<>();
+            t.getContentList().forEach(c -> {
+                ContentResDto contentRes = new ContentResDto();
+                contentRes.setContentId(c.getId());
+                contentRes.setType(c.getThreadType().name());
+                contentRes.setValue(c.getValue());
+                contentRes.setSummary(c.getSummary());
 
-            res.setNickname("테스트닉네임");
-            res.setThreadId(d.getId());
-            res.setThreadTitle(d.getThreadTitle());
-            res.setThreadSubTitle(d.getThreadSubTitle());
-            res.setThreadThumbnail(d.getThreadThumbnail());
-            res.setTagList(d.getTagList());
-            res.setReferenceList(d.getReferenceList());
-//            res.setContentList(d.getContentList());
-//            res.setCategoryList(d.getCategoryList());
+                contentList.add(contentRes);
+            });
+            res.setContentList(contentList);
+            List<CategoryResDto> categoryList = new ArrayList<>();
+            t.getCategoryList().forEach(c -> {
+                CategoryResDto categoryRes = new CategoryResDto();
+                categoryRes.setCategoryId(c.getId());
+                categoryRes.setCategory(c.getCategory());
+
+                categoryList.add(categoryRes);
+            });
+            res.setCategoryList(categoryList);
+            List<TagResDto> tagResList = new ArrayList<>();
+            t.getTagList().forEach(tr -> {
+                TagResDto tagRes = new TagResDto();
+                tagRes.setTagId(tr.getId());
+                tagRes.setTag(tr.getTagName());
+
+                tagResList.add(tagRes);
+            });
+            res.setTagList(tagResList);
+            List<ReferenceResDto> referenceList = new ArrayList<>();
+            t.getReferenceList().forEach(r -> {
+                ReferenceResDto referenceRes = new ReferenceResDto();
+                referenceRes.setReferenceId(r.getId());
+                referenceRes.setReferenceLink(r.getReferenceLink());
+                referenceRes.setReferenceDescription(r.getReferenceDescription());
+
+                referenceList.add(referenceRes);
+            });
+            res.setReferenceList(referenceList);
+            res.setStatus(t.getStatus());
+            res.setNickname("닉네임테스트");
 
             resDtoList.add(res);
         }

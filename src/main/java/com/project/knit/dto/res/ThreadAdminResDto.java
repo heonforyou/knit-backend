@@ -20,10 +20,10 @@ public class ThreadAdminResDto {
     private String threadTitle;
     private String threadSubTitle;
     private String threadThumbnail;
-    private List<Content> contentList;
-    private List<Tag> tagList;
-    private List<Category> categoryList;
-    private List<Reference> referenceList;
+    private List<ContentResDto> contentList;
+    private List<TagResDto> tagList;
+    private List<CategoryResDto> categoryList;
+    private List<ReferenceResDto> referenceList;
     private String status;
     private LocalDateTime createdDate;
 }
