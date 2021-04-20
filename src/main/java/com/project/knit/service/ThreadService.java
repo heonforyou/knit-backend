@@ -25,18 +25,17 @@ public class ThreadService {
     private final S3Service s3Service;
     private final AdminService adminService;
 
-    public CommonResponse checkTagName(String tagName) {
-        CommonResponse response = new CommonResponse();
+    
+     public CommonResponse checkTagName(String tagName) {
         Tag tag = tagRepository.findByTagName(tagName);
-        if (tag != null) {
-            response.setMessage("Already Exists.");
-        } else {
-            response.setMessage("Available Tag Name.");
-        }
-
-        return response;
+        String message = tag != null ?
+                "Already Exists." :
+                "Available Tag Name.";
+        return CommonResponse.builder() //@Builder 
+                .message(message)
+                .build(); // or new CommonResponse(message) with @AllArgsConstructor / @RequiredArgsConstructor
     }
-
+    
     public ThreadResDto getThreadInfoById(Long id) {
         Thread thread = threadRepository.findById(id)
                 .orElseThrow(NullPointerException::new);
@@ -47,54 +46,48 @@ public class ThreadService {
         List<Tag> tagList = tagRepository.findAllByThreadId(threadId);
         List<Reference> referenceList = referenceRepository.findAllByThreadId(threadId);
 
-        List<ContentResDto> contentResList = new ArrayList<>();
-        List<CategoryResDto> categoryResList = new ArrayList<>();
-        List<TagResDto> tagResList = new ArrayList<>();
-        List<ReferenceResDto> referenceResList = new ArrayList<>();
+       //stream map and @Builder
+        List<ContentResDto> contentResList = contentList.stream().map(dao ->
+                ContentResDto.builder()
+                        .contentId(dao.getId())
+                        .type(dao.getThreadType().name())
+                        .value(dao.getValue())
+                        .summary(dao.getSummary())
+                        .build()
+        ).collect(Collectors.toList());
 
-        for (Content c : contentList) {
-            ContentResDto res = new ContentResDto();
-            res.setContentId(c.getId());
-            res.setType(c.getThreadType().name());
-            res.setValue(c.getValue());
-            res.setSummary(c.getSummary() == null ? null : c.getSummary());
+        List<CategoryResDto> categoryResList = categoryList.stream().map(dao ->
+                CategoryResDto.builder()
+                        .categoryId(dao.getId())
+                        .category(dao.getCategory())
+                        .build()
+        ).collect(Collectors.toList());
 
-            contentResList.add(res);
-        }
-        for (Category c : categoryList) {
-            CategoryResDto res = new CategoryResDto();
-            res.setCategoryId(c.getId());
-            res.setCategory(c.getCategory());
+        List<TagResDto> tagResList = tagList.stream().map(dao ->
+                TagResDto.builder()
+                        .tagId(dao.getId())
+                        .tag(dao.getTagName())
+                        .build()
+        ).collect(Collectors.toList());
 
-            categoryResList.add(res);
-        }
-        for (Tag t : tagList) {
-            TagResDto res = new TagResDto();
-            res.setTagId(t.getId());
-            res.setTag(t.getTagName());
+        List<ReferenceResDto> referenceResList = referenceList.stream().map(dao ->
+                ReferenceResDto.builder()
+                        .referenceId(dao.getId())
+                        .referenceLink(dao.getReferenceLink())
+                        .referenceDescription(dao.getReferenceDescription())
+                        .build()
+        ).collect(Collectors.toList());
 
-            tagResList.add(res);
-        }
-        for (Reference r : referenceList) {
-            ReferenceResDto res = new ReferenceResDto();
-            res.setReferenceId(r.getId());
-            res.setReferenceLink(r.getReferenceLink());
-            res.setReferenceDescription(r.getReferenceDescription());
-
-            referenceResList.add(res);
-        }
-
-        ThreadResDto resDto = new ThreadResDto();
-        resDto.setCategoryList(categoryResList);
-        resDto.setContentList(contentResList);
-        resDto.setReferenceList(referenceResList);
-        resDto.setTagList(tagResList);
-        resDto.setThreadId(thread.getId());
-        resDto.setThreadTitle(thread.getThreadTitle());
-        resDto.setThreadSubTitle(thread.getThreadSubTitle());
-        resDto.setThreadThumbnail(thread.getThreadThumbnail());
-
-        return resDto;
+        return ThreadResDto.builder()
+                .categoryList(categoryResList)
+                .contentList(contentResList)
+                .referenceList(referenceResList)
+                .tagList(tagResList)
+                .threadId(thread.getId())
+                .threadTitle(thread.getThreadTitle())
+                .threadSubTitle(thread.getThreadSubTitle())
+                .threadThumbnail(thread.getThreadThumbnail())
+                .build();
     }
 
     @Transactional
